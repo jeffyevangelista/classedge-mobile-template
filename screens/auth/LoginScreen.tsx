@@ -6,22 +6,25 @@ import { Image } from "expo-image";
 import React from "react";
 import { useWindowDimensions, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
   const { height } = useWindowDimensions();
   const verticalPadding = height > 800 ? 64 : 30;
+  const insets = useSafeAreaInsets();
+
+  const dynamicTopPadding = Math.max(insets.top + 20, height * 0.08);
 
   return (
     <KeyboardAwareScrollView
-      showsHorizontalScrollIndicator={false}
-      bottomOffset={65}
-      keyboardShouldPersistTaps="handled"
       style={{
         flex: 1,
         backgroundColor: colors.backgroundColor,
       }}
       contentContainerStyle={{
-        flexGrow: 1,
+        flexGrow: 1, // Use flexGrow instead of flex: 1 for scrollability
+        paddingTop: dynamicTopPadding,
+        paddingBottom: insets.bottom + 20, // Handle the "home indicator" area
       }}
     >
       <View
