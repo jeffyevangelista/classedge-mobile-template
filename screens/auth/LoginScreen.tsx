@@ -41,6 +41,9 @@ const LoginScreen = () => {
             <AppText weight="semiBold" className="text-2xl mt-2">
               Welcome to Classedge
             </AppText>
+            <AppText className="text-gray-500">
+              Login to manage your classes and learning
+            </AppText>
           </View>
 
           <LoginForm />
