@@ -1,9 +1,10 @@
+import { AppText } from "@/components/AppText";
 import LoginForm from "@/features/auth/LoginForm";
 import MSAuthButton from "@/features/auth/MSAuthButton";
 import { colors } from "@/utils/colors";
 import { Image } from "expo-image";
 import React from "react";
-import { Text, useWindowDimensions, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 const LoginScreen = () => {
@@ -15,14 +16,20 @@ const LoginScreen = () => {
       showsHorizontalScrollIndicator={false}
       bottomOffset={65}
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{
+      style={{
         flex: 1,
         backgroundColor: colors.backgroundColor,
+      }}
+      contentContainerStyle={{
+        flexGrow: 1,
       }}
     >
       <View
         className="flex-1 items-center justify-start"
-        style={{ paddingTop: verticalPadding }}
+        style={{
+          paddingTop: verticalPadding,
+          backgroundColor: colors.backgroundColor,
+        }}
       >
         <View className="w-full max-w-md px-2">
           <View className="items-center mb-10">
@@ -31,15 +38,15 @@ const LoginScreen = () => {
               style={{ width: 100, height: 100 }}
               contentFit="contain"
             />
-            <Text className="text-2xl font-bold mt-2">
+            <AppText weight="semiBold" className="text-2xl mt-2">
               Welcome to Classedge
-            </Text>
+            </AppText>
           </View>
 
           <LoginForm />
 
           <View className="items-center gap-4 mt-12">
-            <Text className="text-gray-500">or continue with</Text>
+            <AppText className="text-gray-500">or continue with</AppText>
             <MSAuthButton />
           </View>
         </View>
