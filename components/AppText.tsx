@@ -1,37 +1,34 @@
-import { Text, TextProps } from "react-native";
+import { Text as RNText, type TextProps as RNTextProps } from "react-native";
+import { tv, type VariantProps } from "tailwind-variants";
 
-// Define the available weights based on what you loaded in RootLayout
-type FontWeight =
-  | "thin"
-  | "extraLight"
-  | "light"
-  | "regular"
-  | "medium"
-  | "semiBold"
-  | "bold"
-  | "extraBold"
-  | "black";
+const textVariants = tv({
+  base: "font-sans text-foreground", // Default Poppins-Regular from global.css
+  variants: {
+    weight: {
+      regular: "font-sans", // Maps to --font-normal
+      bold: "font-bold", // Maps to --font-bold
+      semibold: "font-semibold", // Maps to --font-semibold
+    },
+    italic: {
+      true: "italic",
+      false: "",
+    },
+  },
+  defaultVariants: {
+    weight: "regular",
+  },
+});
 
-interface AppTextProps extends TextProps {
-  weight?: FontWeight;
-  italic?: boolean;
-}
-
-export function AppText({
-  style,
-  weight = "regular",
-  italic = false,
-  ...props
-}: AppTextProps) {
-  // Mapping logic to match your RootLayout keys
-  const getFontFamily = () => {
-    // Capitalize the weight for the key (e.g., 'regular' -> 'Regular')
-    const weightName = weight.charAt(0).toUpperCase() + weight.slice(1);
-    const suffix = italic ? "Italic" : "";
-
-    // This matches keys like "Poppins-Regular" or "Poppins-BoldItalic"
-    return `Poppins-${weightName}${suffix}`;
+type TextProps = VariantProps<typeof textVariants> &
+  Omit<RNTextProps, "className"> & {
+    className?: string;
   };
 
-  return <Text style={[{ fontFamily: getFontFamily() }, style]} {...props} />;
+export function AppText({ weight, italic, className, ...props }: TextProps) {
+  return (
+    <RNText
+      className={textVariants({ weight, italic, className })}
+      {...props}
+    />
+  );
 }

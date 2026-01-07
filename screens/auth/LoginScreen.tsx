@@ -1,6 +1,6 @@
 import { AppText } from "@/components/AppText";
-import LoginForm from "@/features/auth/LoginForm";
-import MSAuthButton from "@/features/auth/MSAuthButton";
+import LoginForm from "@/features/auth/components/LoginForm";
+import MSAuthButton from "@/features/auth/components/MSAuthButton";
 import { colors } from "@/utils/colors";
 import { Image } from "expo-image";
 import React from "react";
@@ -41,7 +41,7 @@ const LoginScreen = () => {
               style={{ width: 100, height: 100 }}
               contentFit="contain"
             />
-            <AppText weight="semiBold" className="text-2xl mt-2">
+            <AppText weight="semibold" className="text-2xl mt-2">
               Welcome to Classedge
             </AppText>
             <AppText className="text-gray-500">
