@@ -1,12 +1,7 @@
-import React from "react";
-import { Text, View } from "react-native";
+import CalendarScreen from "@/screens/main/CalendarScreen";
 
 const CalendarRoute = () => {
-  return (
-    <View>
-      <Text>CalendarRoute</Text>
-    </View>
-  );
+  return <CalendarScreen />;
 };
 
 export default CalendarRoute;

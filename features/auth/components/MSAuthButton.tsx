@@ -1,12 +1,13 @@
 import MsLogo from "@/assets/ms-logo.svg";
+// import Image from "@/components/Image";
+import { Button } from "heroui-native";
 import React from "react";
-import { TouchableOpacity } from "react-native";
 
 const MSAuthButton = () => {
   return (
-    <TouchableOpacity>
+    <Button isIconOnly size="lg" variant="ghost">
       <MsLogo width={32} height={32} />
-    </TouchableOpacity>
+    </Button>
   );
 };
 

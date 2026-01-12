@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-const SubjectsRoute = () => {
+const NotificationsScreen = () => {
   return (
     <View>
-      <Text>SubjectsRoute</Text>
+      <Text>NotificationsScreen</Text>
     </View>
   );
 };
 
-export default SubjectsRoute;
+export default NotificationsScreen;

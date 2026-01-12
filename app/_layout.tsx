@@ -42,7 +42,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />
       </Stack>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
     </RootProvider>
   );
 }

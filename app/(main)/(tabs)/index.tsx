@@ -1,12 +1,7 @@
-import React from "react";
-import { Text, View } from "react-native";
+import HomeScreen from "@/screens/main/HomeScreen";
 
 const HomeRoute = () => {
-  return (
-    <View>
-      <Text>HomeRoute</Text>
-    </View>
-  );
+  return <HomeScreen />;
 };
 
 export default HomeRoute;
