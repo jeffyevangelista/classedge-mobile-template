@@ -1,5 +1,6 @@
+import { API_URL } from "@/utils/env";
 import axios from "axios";
-import { API_URL } from "./env";
+import useStore from "./store";
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -10,6 +11,12 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
+  const { accessToken } = useStore.getState();
+
+  if (accessToken && config.headers) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
   return config;
 });
 
