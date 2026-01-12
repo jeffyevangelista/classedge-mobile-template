@@ -4,6 +4,7 @@ import Image from "@/components/Image";
 import Screen from "@/components/screen";
 import { colors } from "@/utils/colors";
 import { FlashList } from "@shopify/flash-list";
+import { Link } from "expo-router";
 import { Avatar, Button, Card, TextField } from "heroui-native";
 import {
   BellIcon,
@@ -54,24 +55,26 @@ const HomeScreen = () => {
         <View className="gap-5 w-full max-w-3xl mx-auto px-5 pt-2.5 md:p-0">
           {/* header */}
           <View className="flex flex-row justify-between">
-            <View className="flex flex-row items-center gap-3">
-              <Avatar size="sm" alt="user-profile">
-                <Avatar.Image
-                  source={{ uri: "https://example.com/avatar.jpg" }}
-                />
-                <Avatar.Fallback>JD</Avatar.Fallback>
-              </Avatar>
-              <View>
-                <AppText numberOfLines={1}>Good Morning,</AppText>
-                <AppText
-                  numberOfLines={1}
-                  weight="semibold"
-                  className="text-2xl"
-                >
-                  User
-                </AppText>
+            <Link href="/profile">
+              <View className="flex flex-row items-center gap-3">
+                <Avatar size="sm" alt="user-profile">
+                  <Avatar.Image
+                    source={{ uri: "https://example.com/avatar.jpg" }}
+                  />
+                  <Avatar.Fallback>JD</Avatar.Fallback>
+                </Avatar>
+                <View>
+                  <AppText numberOfLines={1}>Good Morning,</AppText>
+                  <AppText
+                    numberOfLines={1}
+                    weight="semibold"
+                    className="text-2xl"
+                  >
+                    User
+                  </AppText>
+                </View>
               </View>
-            </View>
+            </Link>
             <Button isIconOnly variant="ghost">
               <BellIcon color={colors.primary[500]} size={30} />
             </Button>
