@@ -1,10 +1,5 @@
 import "@/global.css";
-import RootProvider from "@/providers/RootProvider";
-import { SplashScreen, Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
 
-// 1. Cleaner Imports
 import {
   Poppins_400Regular,
   Poppins_500Medium,
@@ -12,6 +7,11 @@ import {
   Poppins_700Bold,
   useFonts,
 } from "@expo-google-fonts/poppins";
+import { SplashScreen, Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+// 1. Cleaner Imports
+import RootProvider from "@/providers/RootProvider";
 
 // 2. Prevent auto-hide MUST be called outside the component
 SplashScreen.preventAutoHideAsync();

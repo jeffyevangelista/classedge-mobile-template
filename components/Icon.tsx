@@ -1,5 +1,5 @@
-import { IconProps } from "phosphor-react-native";
-import React, { ComponentType } from "react";
+import type { IconProps } from "phosphor-react-native";
+import type { ComponentType } from "react";
 import { withUniwind } from "uniwind";
 
 interface ReusableIconProps extends IconProps {

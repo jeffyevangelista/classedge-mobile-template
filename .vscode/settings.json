@@ -3,5 +3,8 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "editor.defaultFormatter": "biomejs.biome",
+  "notebook.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true
 }

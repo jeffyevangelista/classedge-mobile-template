@@ -1,7 +1,5 @@
 import MsLogo from "@/assets/ms-logo.svg";
-// import Image from "@/components/Image";
 import { Button } from "heroui-native";
-import React from "react";
 
 const MSAuthButton = () => {
   return (

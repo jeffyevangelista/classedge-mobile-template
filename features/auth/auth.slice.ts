@@ -1,4 +1,7 @@
-import { StateCreator } from "zustand";
+import { deleteSSItem, setSSItem } from "@/lib/storage/secure-storage";
+import { jwtDecode } from "jwt-decode";
+import type { StateCreator } from "zustand";
+import type { DecodedToken } from "./auth.types";
 
 type AuthState = {
   accessToken: string | null;
@@ -22,9 +25,24 @@ const initialState: AuthState = {
 
 const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
   ...initialState,
-  setAccessToken: (accessToken: string) => set({ accessToken }),
-  setRefreshToken: (refreshToken: string) => set({ refreshToken }),
-  logout: () => set({ ...initialState }),
+  setAccessToken: async (accessToken: string) => {
+    if (!accessToken) return;
+    const { userId, exp } = jwtDecode<DecodedToken>(accessToken);
+
+    if (!userId || !exp) return;
+
+    await setSSItem("accessToken", accessToken);
+    set({ accessToken, expiresAt: exp * 1000 });
+  },
+  setRefreshToken: async (refreshToken: string) => {
+    await setSSItem("refreshToken", refreshToken);
+    set({ refreshToken });
+  },
+  logout: () => {
+    set({ ...initialState });
+    deleteSSItem("accessToken");
+    deleteSSItem("refreshToken");
+  },
 });
 
 export default createAuthSlice;

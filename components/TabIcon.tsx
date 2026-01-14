@@ -1,5 +1,4 @@
-import { Icon } from "phosphor-react-native";
-import React from "react";
+import type { Icon } from "phosphor-react-native";
 
 const ICON_SIZE = 28;
 

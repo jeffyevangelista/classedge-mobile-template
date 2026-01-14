@@ -1,15 +1,14 @@
 import { getPowerSyncToken } from "@/features/auth/auth.apis";
 import { API_URL, POWERSYNC_ENDPOINT } from "@/utils/env";
 import {
-  AbstractPowerSyncDatabase,
-  PowerSyncBackendConnector,
+  type AbstractPowerSyncDatabase,
+  type PowerSyncBackendConnector,
   UpdateType,
 } from "@powersync/react-native";
 
 export class Connector implements PowerSyncBackendConnector {
   async fetchCredentials() {
     const res = await getPowerSyncToken();
-    console.log(res);
 
     return {
       endpoint: POWERSYNC_ENDPOINT,

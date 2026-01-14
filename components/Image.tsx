@@ -1,5 +1,4 @@
-import { Image as ExpoImage, ImageProps } from "expo-image";
-import React from "react";
+import { Image as ExpoImage, type ImageProps } from "expo-image";
 import { withUniwind } from "uniwind";
 
 // 1. Wrap the base Image component with Uniwind functionality

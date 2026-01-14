@@ -1,18 +1,14 @@
-import { OPSqliteOpenFactory } from "@powersync/op-sqlite";
-import {
-  createBaseLogger,
-  LogLevel,
-  PowerSyncDatabase,
-} from "@powersync/react-native";
 // 1. Import the Drizzle wrapper and your schema
 import { wrapPowerSyncWithDrizzle } from "@powersync/drizzle-driver";
+import { OPSqliteOpenFactory } from "@powersync/op-sqlite";
+import { PowerSyncDatabase } from "@powersync/react-native";
 import { AppSchema } from "./AppSchema"; // Your PowerSync Schema
 import { Connector } from "./Connector";
 import * as drizzleSchema from "./schema"; // Your Drizzle Table definitions
 
-const logger = createBaseLogger();
-logger.useDefaults();
-logger.setLevel(__DEV__ ? LogLevel.DEBUG : LogLevel.WARN);
+// const logger = createBaseLogger();
+// logger.useDefaults();
+// logger.setLevel(__DEV__ ? LogLevel.DEBUG : LogLevel.WARN);
 
 const opSqlite = new OPSqliteOpenFactory({
   dbFilename: "powersync.db",
@@ -21,7 +17,7 @@ const opSqlite = new OPSqliteOpenFactory({
 export const powersync = new PowerSyncDatabase({
   schema: AppSchema,
   database: opSqlite,
-  logger,
+  // logger,
 });
 
 // 2. Create the Drizzle DB instance

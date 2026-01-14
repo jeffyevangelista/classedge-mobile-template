@@ -1,5 +1,7 @@
+import { refresh } from "@/features/auth/refreshToken";
 import { API_URL } from "@/utils/env";
 import axios from "axios";
+import { Alert } from "react-native";
 import useStore from "./store";
 
 export const api = axios.create({
@@ -22,7 +24,30 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
+    const { setAccessToken, refreshToken } = useStore.getState();
+
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      if (refreshToken) {
+        try {
+          const { accessToken } = await refresh(refreshToken);
+
+          setAccessToken(accessToken);
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          return api(originalRequest);
+        } catch (error) {
+          Alert.alert("Error", "Failed to refresh token");
+          return Promise.reject(error);
+        }
+      }
+    }
+
     if (error.response) {
       error.message = error.response.data.message ?? error.message;
     }

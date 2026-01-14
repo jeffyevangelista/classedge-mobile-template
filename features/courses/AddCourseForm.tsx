@@ -2,7 +2,7 @@ import { subjects } from "@/powersync/schema";
 import { db } from "@/powersync/system";
 import { colors } from "@/utils/colors";
 import { BottomSheet, Button, TextField } from "heroui-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, View } from "react-native";
 
 const AddCourseForm = () => {

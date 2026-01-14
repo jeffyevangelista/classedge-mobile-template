@@ -1,5 +1,5 @@
 import { createId } from "@paralleldrive/cuid2";
-import { InferInsertModel, InferSelectModel, sql } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 // PowerSync/SQLite compatible UTC ISO string

@@ -1,7 +1,7 @@
 import { AppText } from "@/components/AppText";
 import { Icon } from "@/components/Icon";
 import Image from "@/components/Image";
-import { Subject, subjects } from "@/powersync/schema";
+import { type Subject, subjects } from "@/powersync/schema";
 import { db } from "@/powersync/system";
 import { toCompilableQuery } from "@powersync/drizzle-driver";
 import { useQuery } from "@powersync/react-native";
@@ -9,7 +9,6 @@ import { FlashList } from "@shopify/flash-list";
 import { eq } from "drizzle-orm";
 import { Card, TextField } from "heroui-native";
 import { MagnifyingGlassIcon } from "phosphor-react-native";
-import React from "react";
 import { Alert, useWindowDimensions, View } from "react-native";
 
 const CourseList = () => {

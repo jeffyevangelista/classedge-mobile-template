@@ -1,4 +1,4 @@
-import createAuthSlice, { AuthSlice } from "@/features/auth/auth.slice";
+import createAuthSlice, { type AuthSlice } from "@/features/auth/auth.slice";
 import { create } from "zustand";
 
 type Store = AuthSlice;

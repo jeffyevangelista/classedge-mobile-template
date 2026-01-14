@@ -2,7 +2,7 @@ import AcademicRecordsScreen from "@/screens/profile/AcademicRecordsScreen";
 import React from "react";
 
 const AcademicRecordRoute = () => {
-  return <AcademicRecordsScreen />;
+	return <AcademicRecordsScreen />;
 };
 
 export default AcademicRecordRoute;

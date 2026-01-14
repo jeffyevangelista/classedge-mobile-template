@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useToast } from "heroui-native";
 import { login } from "./auth.apis";
-import { AuthResponse, LoginCredentials } from "./auth.types";
+import type { AuthResponse, LoginCredentials } from "./auth.types";
 
 export const useLogin = () => {
   const { toast } = useToast();
