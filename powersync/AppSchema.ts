@@ -1,12 +1,6 @@
-import { column, Schema, Table } from "@powersync/react-native";
+import { DrizzleAppSchema } from "@powersync/drizzle-driver";
+import { drizzleSchema } from "./schema";
 
-const subjects = new Table({
-  name: column.text,
-});
-
-export const AppSchema = new Schema({
-  subjects,
-});
+export const AppSchema = new DrizzleAppSchema(drizzleSchema);
 
 export type Database = (typeof AppSchema)["types"];
-export type SubjectRecord = Database["subjects"];

@@ -5,12 +5,8 @@ import Screen from "@/components/screen";
 import { colors } from "@/utils/colors";
 import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
-import { Avatar, Button, Card, TextField } from "heroui-native";
-import {
-  BellIcon,
-  BookOpenIcon,
-  MagnifyingGlassIcon,
-} from "phosphor-react-native";
+import { Avatar, Button, Card } from "heroui-native";
+import { BellIcon, BookOpenIcon } from "phosphor-react-native";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -64,11 +60,13 @@ const HomeScreen = () => {
                   <Avatar.Fallback>JD</Avatar.Fallback>
                 </Avatar>
                 <View>
-                  <AppText numberOfLines={1}>Good Morning,</AppText>
+                  <AppText numberOfLines={1} className="">
+                    Good Morning,
+                  </AppText>
                   <AppText
                     numberOfLines={1}
                     weight="semibold"
-                    className="text-2xl"
+                    className="text-2xl leading-none"
                   >
                     User
                   </AppText>
@@ -79,15 +77,6 @@ const HomeScreen = () => {
               <BellIcon color={colors.primary[500]} size={30} />
             </Button>
           </View>
-
-          {/* search field */}
-          <TextField className="md:max-w-3xl md:mx-auto w-full">
-            <TextField.Input>
-              <TextField.InputEndContent>
-                <MagnifyingGlassIcon />
-              </TextField.InputEndContent>
-            </TextField.Input>
-          </TextField>
 
           {/* Current Class Card */}
           <Card

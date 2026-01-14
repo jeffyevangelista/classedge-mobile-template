@@ -1,58 +1,92 @@
 import { AppText } from "@/components/AppText";
 import { Icon } from "@/components/Icon";
-import { powersync } from "@/powersync/system";
-import { useQuery } from "@powersync/tanstack-react-query";
+import Image from "@/components/Image";
+import { Subject, subjects } from "@/powersync/schema";
+import { db } from "@/powersync/system";
+import { toCompilableQuery } from "@powersync/drizzle-driver";
+import { useQuery } from "@powersync/react-native";
 import { FlashList } from "@shopify/flash-list";
-import { Button, Card } from "heroui-native";
-import { TrashSimpleIcon } from "phosphor-react-native";
+import { eq } from "drizzle-orm";
+import { Card, TextField } from "heroui-native";
+import { MagnifyingGlassIcon } from "phosphor-react-native";
 import React from "react";
-import { Alert, View } from "react-native";
+import { Alert, useWindowDimensions, View } from "react-native";
 
 const CourseList = () => {
-  const { data, isLoading, isRefetching, isError, error } = useQuery<
-    { id: string; name: string }[]
-  >({
-    queryKey: ["courses"],
-    query: "SELECT * FROM subjects ORDER BY name DESC",
-  });
+  const { width } = useWindowDimensions();
+  const MIN_CARD_WIDTH = 280; // The "Sweet Spot" for readability
 
-  const handleDelete = async (id: any) => {
+  // Calculate how many columns fit based on available width
+  // Math.max(1, ...) ensures we never have 0 columns
+  const numColumns = Math.max(1, Math.floor(width / MIN_CARD_WIDTH));
+
+  const { data, isLoading } = useQuery(
+    toCompilableQuery(db.select().from(subjects))
+  );
+
+  return (
+    <View className="w-full max-w-6xl mx-auto flex-1  ">
+      <FlashList
+        ListHeaderComponent={
+          <TextField className="p-1 md:max-w-xl md:mx-auto w-full">
+            <TextField.Input>
+              <TextField.InputEndContent>
+                <Icon as={MagnifyingGlassIcon} />
+              </TextField.InputEndContent>
+            </TextField.Input>
+          </TextField>
+        }
+        key={numColumns}
+        numColumns={numColumns}
+        data={data}
+        className="p-2.5"
+        contentContainerStyle={{ paddingBottom: 15 }}
+        renderItem={({ item }) => <Course item={item} />}
+      />
+    </View>
+  );
+};
+
+const Course = ({ item }: { item: Subject }) => {
+  const { width } = useWindowDimensions();
+  const MIN_CARD_WIDTH = 280; // The "Sweet Spot" for readability
+
+  const numColumns = Math.max(1, Math.floor(width / MIN_CARD_WIDTH));
+  const handleDelete = async (id: string) => {
     try {
-      await powersync.execute(`DELETE FROM subjects WHERE id = "${id}"`);
+      await db.delete(subjects).where(eq(subjects.id, id));
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "Failed to delete subject");
     }
   };
-
   return (
-    <View className="w-full max-w-3xl mx-auto flex-1">
-      <FlashList
-        ListHeaderComponent={
-          <View>
-            {isLoading && <AppText>Loading...</AppText>}
-            {isRefetching && <AppText>Refreshing...</AppText>}
-            {isError && <AppText>Error: {error.message}</AppText>}
-          </View>
-        }
-        className="p-2.5"
-        data={data}
-        renderItem={({ item }) => (
-          <Card className="mb-2.5">
-            <Card.Body className="flex flex-row justify-between items-center">
-              <AppText>{item.name}</AppText>
-              <Button
-                size="sm"
-                isIconOnly
-                variant="danger-soft"
-                onPress={() => handleDelete(item.id)}
+    <View style={{ flex: 1 / numColumns, padding: 10 / 2 }}>
+      <Card className="p-0">
+        <Card.Body className="gap-2.5">
+          <Image
+            source={require("@/assets/placeholder/bg-placeholder.png")}
+            className="rounded-t-3xl w-full aspect-video border"
+            contentFit="cover"
+          />
+          <View className="px-4 pb-4">
+            {/* Added a fixed height container here */}
+            <View className="md:h-14">
+              <AppText
+                numberOfLines={2}
+                className="font-semibold text-lg md:text-md leading-6"
               >
-                <Icon as={TrashSimpleIcon} />
-              </Button>
-            </Card.Body>
-          </Card>
-        )}
-      />
+                {item.name}
+              </AppText>
+            </View>
+
+            {/* This will now stay aligned across all cards */}
+            <AppText numberOfLines={1} className="text-sm text-gray-500">
+              Room {item.roomNumber} · {item.teacherName}
+            </AppText>
+          </View>
+        </Card.Body>
+      </Card>
     </View>
   );
 };

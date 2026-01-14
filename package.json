@@ -16,10 +16,10 @@
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "^5.2.8",
     "@op-engineering/op-sqlite": "^15.2.2",
+    "@paralleldrive/cuid2": "^3.0.6",
     "@powersync/drizzle-driver": "^0.7.1",
     "@powersync/op-sqlite": "^0.7.18",
     "@powersync/react-native": "^1.28.1",
-    "@powersync/tanstack-react-query": "^0.1.13",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
@@ -29,6 +29,7 @@
     "axios": "^1.13.2",
     "expo": "~54.0.30",
     "expo-constants": "~18.0.12",
+    "expo-crypto": "~15.0.8",
     "expo-font": "~14.0.10",
     "expo-haptics": "~15.0.8",
     "expo-image": "~3.0.11",
@@ -66,6 +67,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "typescript": "~5.9.2"
