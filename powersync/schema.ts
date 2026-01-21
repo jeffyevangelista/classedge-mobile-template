@@ -21,6 +21,7 @@ export const subjects = sqliteTable("subjects", {
     .notNull()
     .default(utcNow)
     .$onUpdateFn(() => new Date().toISOString()),
+  ownerId: text("owner_id").notNull(),
 });
 
 // 2. Define other tables here...

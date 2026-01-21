@@ -1,7 +1,15 @@
 import type { JwtPayload } from "jwt-decode";
+
 export type LoginCredentials = {
   email: string;
   password: string;
+};
+
+export type AuthUser = {
+  id: number;
+  role: string;
+  needsPasswordSetup: boolean;
+  needsOnboarding: boolean;
 };
 
 export type AuthResponse = {
@@ -10,5 +18,8 @@ export type AuthResponse = {
 };
 
 export type DecodedToken = JwtPayload & {
-  userId?: string;
+  id: number;
+  role: string;
+  needsPasswordSetup: boolean;
+  needsOnboarding: boolean;
 };

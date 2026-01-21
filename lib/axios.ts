@@ -28,6 +28,8 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     const { setAccessToken, refreshToken } = useStore.getState();
 
+    console.log(error.response?.status);
+
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry
@@ -35,8 +37,14 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       if (refreshToken) {
+        console.log("refreshing");
+
         try {
+          console.log("triggered");
+
           const { accessToken } = await refresh(refreshToken);
+
+          console.log({ accessToken });
 
           setAccessToken(accessToken);
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -53,5 +61,5 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );

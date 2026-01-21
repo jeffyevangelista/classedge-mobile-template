@@ -1,3 +1,4 @@
+import useStore from "@/lib/store";
 import { subjects } from "@/powersync/schema";
 import { db } from "@/powersync/system";
 import { colors } from "@/utils/colors";
@@ -6,6 +7,7 @@ import { useState } from "react";
 import { Alert, View } from "react-native";
 
 const AddCourseForm = () => {
+  const { authUser } = useStore();
   const [name, setName] = useState("");
   const [teacher, setTeacher] = useState("");
   const [room, setRoom] = useState("");
@@ -13,9 +15,12 @@ const AddCourseForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleSubmit = async () => {
     try {
-      await db
-        .insert(subjects)
-        .values({ name, teacherName: teacher, roomNumber: room });
+      await db.insert(subjects).values({
+        name,
+        teacherName: teacher,
+        roomNumber: room,
+        ownerId: String(authUser?.id!),
+      });
       setName("");
     } catch (error) {
       console.log(error);

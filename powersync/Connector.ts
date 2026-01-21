@@ -31,6 +31,7 @@ export class Connector implements PowerSyncBackendConnector {
       for (const op of transaction.crud) {
         // op.opData contains the columns (name, etc.)
         // op.id is the automatically managed 'id' column
+        console.log(op);
         const record = { ...op.opData, id: op.id };
 
         switch (op.op) {
