@@ -7,6 +7,7 @@ import { toCompilableQuery } from "@powersync/drizzle-driver";
 import { useQuery } from "@powersync/react-native";
 import { FlashList } from "@shopify/flash-list";
 import { eq } from "drizzle-orm";
+import { Link } from "expo-router";
 import { Card, TextField } from "heroui-native";
 import { MagnifyingGlassIcon } from "phosphor-react-native";
 import { Alert, Pressable, useWindowDimensions, View } from "react-native";
@@ -55,42 +56,41 @@ const Course = ({ item }: { item: Subject }) => {
   const MIN_CARD_WIDTH = 280; // The "Sweet Spot" for readability
 
   const numColumns = Math.max(1, Math.floor(width / MIN_CARD_WIDTH));
-  const handleDelete = async (id: string) => {
-    try {
-      await db.delete(subjects).where(eq(subjects.id, id));
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Error", "Failed to delete subject");
-    }
-  };
+
   return (
-    <View style={{ flex: 1 / numColumns, padding: 10 / 2 }}>
-      <Card className="p-0">
-        <Card.Body className="gap-2.5">
-          <Image
-            source={require("@/assets/placeholder/bg-placeholder.png")}
-            className="rounded-t-3xl w-full aspect-video border"
-            contentFit="cover"
-          />
-          <View className="px-4 pb-4">
-            {/* Added a fixed height container here */}
-            <View className="md:h-14">
-              <AppText
-                numberOfLines={2}
-                className="font-semibold text-lg md:text-md leading-6"
-              >
-                {item.name}
+    <Link
+      href={`/course/${item.id}`}
+      style={{ flex: 1 / numColumns, padding: 10 / 2 }}
+      asChild
+    >
+      <Pressable>
+        <Card className="p-0">
+          <Card.Body className="gap-2.5">
+            <Image
+              source={require("@/assets/placeholder/bg-placeholder.png")}
+              className="rounded-t-3xl w-full aspect-video border"
+              contentFit="cover"
+            />
+            <View className="px-4 pb-4">
+              {/* Added a fixed height container here */}
+              <View className="md:h-14">
+                <AppText
+                  numberOfLines={2}
+                  className="font-semibold text-lg md:text-md leading-6"
+                >
+                  {item.name}
+                </AppText>
+              </View>
+
+              {/* This will now stay aligned across all cards */}
+              <AppText numberOfLines={1} className="text-sm text-gray-500">
+                Room {item.roomNumber} · {item.teacherName}
               </AppText>
             </View>
-
-            {/* This will now stay aligned across all cards */}
-            <AppText numberOfLines={1} className="text-sm text-gray-500">
-              Room {item.roomNumber} · {item.teacherName}
-            </AppText>
-          </View>
-        </Card.Body>
-      </Card>
-    </View>
+          </Card.Body>
+        </Card>
+      </Pressable>
+    </Link>
   );
 };
 

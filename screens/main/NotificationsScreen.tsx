@@ -1,10 +1,11 @@
 import Screen from "@/components/screen";
+import NotificationList from "@/features/notifications/NotificationList";
 import { Text, View } from "react-native";
 
 const NotificationsScreen = () => {
   return (
     <Screen>
-      <Text>NotificationsScreen</Text>
+      <NotificationList />
     </Screen>
   );
 };
