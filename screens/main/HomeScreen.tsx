@@ -13,6 +13,7 @@ import AnnouncementList from "@/features/announcements/AnnouncementList";
 import SyncBanner from "@/features/sync/components/SyncBanner";
 import SyncCenter from "@/features/sync/components/SyncCenter";
 import { colors } from "@/utils/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Move static types and data outside the component
 type PendingAssessment = {
@@ -75,13 +76,13 @@ const HomeScreen = () => {
     [],
   );
 
+  const { top } = useSafeAreaInsets();
+
+  console.log(top);
+
   return (
     <Screen>
-      <ScrollView
-        className="pt-10"
-        // Improves scroll performance on Android
-        removeClippedSubviews={true}
-      >
+      <ScrollView style={{ paddingTop: top }} removeClippedSubviews={true}>
         <View className="gap-6 w-full max-w-3xl mx-auto pt-2.5 pb-10">
           {/* Header Section */}
           <View className="px-5 flex flex-row justify-between items-center">
@@ -95,7 +96,7 @@ const HomeScreen = () => {
                 </Avatar>
                 <View>
                   <AppText className="text-gray-500">Good Morning,</AppText>
-                  <AppText weight="semibold" className="text-2xl leading-tight">
+                  <AppText weight="semibold" className="text-2xl leading-none">
                     User
                   </AppText>
                 </View>

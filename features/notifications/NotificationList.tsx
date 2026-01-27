@@ -1,8 +1,14 @@
 import { AppText } from "@/components/AppText";
+import { Icon } from "@/components/Icon";
 import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
 import { Avatar, Card } from "heroui-native";
-import { Pressable, View } from "react-native";
+import {
+  BookOpenIcon,
+  IdentificationBadgeIcon,
+  PersonIcon,
+} from "phosphor-react-native";
+import { Pressable, useWindowDimensions, View } from "react-native";
 
 type Notification = {
   id: number;
@@ -67,16 +73,20 @@ const notifications: Notification[] = [
     created_by_photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Grader",
   },
 ];
+
 const NotificationItem = ({
   entity_type,
   entity_id,
   message,
-  created_by,
   created_at,
   is_read,
+  created_by_photo,
 }: Notification) => {
+  const { width } = useWindowDimensions();
+
   return (
     <Link
+      className={`rounded ${is_read ? "border-b border-gray-200" : "mb-1"}`}
       href={
         entity_type === "material"
           ? `/material/${entity_id}`
@@ -84,24 +94,45 @@ const NotificationItem = ({
       }
       asChild
     >
-      <Pressable>
-        <Card className="rounded max-w-7xl mx-auto w-full mb-1">
-          <Card.Body className="flex-row items-center gap-2 justify-start">
-            <Avatar alt="" size="sm"></Avatar>
-            <View className="flex-1 h-full">
-              <AppText
-                numberOfLines={1}
-                weight={is_read ? "regular" : "semibold"}
-                className="text-sm flex-1"
-              >
-                {message}
-              </AppText>
-              <AppText numberOfLines={1} className="text-xs flex-1">
-                {created_at}
-              </AppText>
-            </View>
-          </Card.Body>
-        </Card>
+      <Pressable
+        className={`
+        flex-row items-start p-4 rounded
+        ${is_read ? "bg-white" : "bg-[#EBF5FF] "}
+      `}
+      >
+        {/* Icon Section */}
+        <View
+          className={`p-2.5 rounded-xl ${is_read ? "bg-slate-100" : "bg-white"}`}
+        >
+          <Icon
+            as={
+              entity_type === "assessment"
+                ? IdentificationBadgeIcon
+                : BookOpenIcon
+            }
+            size={22}
+            className={is_read ? "text-slate-400" : "text-blue-600"}
+          />
+        </View>
+
+        {/* Content Section */}
+        <View className="flex-1 ml-3">
+          <AppText
+            weight={is_read ? "regular" : "bold"}
+            className={`text-sm ${is_read ? "text-slate-500" : "text-slate-900"}`}
+            numberOfLines={2}
+          >
+            {message}
+          </AppText>
+          <AppText className="text-[11px] text-slate-400 mt-1 uppercase font-medium">
+            {entity_type} • 2 hours ago
+          </AppText>
+        </View>
+
+        {/* Dot Indicator */}
+        {!is_read && (
+          <View className="w-2.5 h-2.5 rounded-full bg-blue-600 self-center ml-2" />
+        )}
       </Pressable>
     </Link>
   );
@@ -110,10 +141,11 @@ const NotificationItem = ({
 const NotificationList = () => {
   return (
     <FlashList
+      className="bg-none"
       data={notifications}
+      // contentContainerStyle={{ paddingVertical: 16 }}
       renderItem={({ item }) => <NotificationItem {...item} />}
     />
   );
 };
-
 export default NotificationList;

@@ -1,4 +1,10 @@
+import { Icon } from "@/components/Icon";
 import { Tabs, TextField, FormField, Checkbox, Button } from "heroui-native";
+import {
+  HouseIcon,
+  MagnifyingGlassIcon,
+  UserIcon,
+} from "phosphor-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import Animated, {
@@ -29,7 +35,7 @@ export default function TabsExample() {
   const [name, setName] = useState("");
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} variant="pill">
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
       <Tabs.List>
         <Tabs.ScrollView>
           <Tabs.Indicator />
