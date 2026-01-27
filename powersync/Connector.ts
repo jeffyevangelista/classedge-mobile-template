@@ -31,13 +31,12 @@ export class Connector implements PowerSyncBackendConnector {
       for (const op of transaction.crud) {
         // op.opData contains the columns (name, etc.)
         // op.id is the automatically managed 'id' column
-        console.log(op);
         const record = { ...op.opData, id: op.id };
 
         switch (op.op) {
           case UpdateType.PUT:
             // For 'PUT', typically use an UPSERT on your backend
-            await fetch(`${API_URL}/subjects`, {
+            await fetch(`${API_URL}/${op.table}`, {
               method: "POST",
               headers: {
                 // DO NOT omit this. Without it, Express won't trigger the JSON parser.
@@ -48,7 +47,7 @@ export class Connector implements PowerSyncBackendConnector {
             });
             break;
           case UpdateType.PATCH:
-            await fetch(`${API_URL}/subjects/${op.id}`, {
+            await fetch(`${API_URL}/${op.table}/${op.id}`, {
               method: "PATCH",
               headers: {
                 // DO NOT omit this. Without it, Express won't trigger the JSON parser.
@@ -59,7 +58,7 @@ export class Connector implements PowerSyncBackendConnector {
             });
             break;
           case UpdateType.DELETE:
-            await fetch(`${API_URL}/subjects/${op.id}`, {
+            await fetch(`${API_URL}/${op.table}/${op.id}`, {
               method: "DELETE",
               headers: {
                 // DO NOT omit this. Without it, Express won't trigger the JSON parser.

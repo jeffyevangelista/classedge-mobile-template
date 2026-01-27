@@ -18,16 +18,16 @@ export default function Screen({
   withPadding = false,
   ...props
 }: ScreenProps) {
-  const combinedClasses = twMerge(
-    `flex-1 ${colors.backgroundColor}`,
-    withPadding && "p-5",
-    className
-  );
+  const combinedClasses = twMerge(`flex-1 `, withPadding && "p-5", className);
 
   const Container = safeArea ? SafeAreaView : View;
 
   return (
-    <Container {...props} className={combinedClasses}>
+    <Container
+      style={{ backgroundColor: colors.backgroundColor }}
+      {...props}
+      className={combinedClasses}
+    >
       {children}
     </Container>
   );

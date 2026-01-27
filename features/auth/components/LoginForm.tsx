@@ -1,9 +1,11 @@
-import { colors } from "@/utils/colors";
 import { Button, Spinner, TextField, useThemeColor } from "heroui-native";
 import { useState } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Pressable, TouchableOpacity, View } from "react-native";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/outline";
 import { useLogin } from "../auth.hooks";
+import { Icon } from "@/components/Icon";
+import { AppText } from "@/components/AppText";
+import { colors } from "@/utils/colors";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +22,6 @@ const LoginForm = () => {
     }
   };
 
-  // Inside LoginForm.tsx
   return (
     <View className="p-2.5 md:p-5 gap-3">
       {/* Changed gap-4 to gap-3 */}
@@ -33,9 +34,7 @@ const LoginForm = () => {
           value={email}
           onChangeText={setEmail}
         />
-        {/* UI Hack: Only show ErrorMessage if there IS an error 
-         to prevent it from taking up empty space.
-      */}
+
         {isError && (
           <TextField.ErrorMessage>
             {error?.message || "Please enter a valid email"}
@@ -45,32 +44,30 @@ const LoginForm = () => {
       <View className="gap-1">
         <TextField>
           <TextField.Label>Password</TextField.Label>
-          <TextField.Input
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
-          >
-            <TextField.InputEndContent>
-              {/* Ensure the icon button doesn't add extra height */}
-              <Button
-                variant="ghost"
-                isIconOnly
-                size="sm"
-                onPress={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeIcon size={20} color="gray" />
-                ) : (
-                  <EyeSlashIcon size={20} color="gray" />
-                )}
-              </Button>
-            </TextField.InputEndContent>
-          </TextField.Input>
+          <View className="w-full flex-row items-center">
+            <TextField.Input
+              value={password}
+              onChangeText={setPassword}
+              className="flex-1 pr-10"
+              placeholder="Enter your password"
+              secureTextEntry={!showPassword}
+            />
+            <Pressable
+              className="absolute right-4"
+              onPress={() => setShowPassword(!showPassword)}
+            >
+              <Icon
+                as={showPassword ? EyeIcon : EyeSlashIcon}
+                size={20}
+                color="gray"
+              />
+            </Pressable>
+          </View>
         </TextField>
         <TouchableOpacity className="self-end py-1">
-          <Text style={{ fontSize: 12, color: colors.primary[600] }}>
+          <AppText style={{ fontSize: 12, color: colors.primary[600] }}>
             Forgot Password
-          </Text>
+          </AppText>
         </TouchableOpacity>
       </View>
       <Button

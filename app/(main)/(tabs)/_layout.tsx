@@ -1,4 +1,5 @@
 import TabIcon from "@/components/TabIcon";
+import SyncCenter from "@/features/sync/components/SyncCenter";
 import { colors } from "@/utils/colors";
 import { Tabs } from "expo-router";
 import { Avatar, Button } from "heroui-native";
@@ -6,10 +7,9 @@ import {
   BellIcon,
   BookOpenIcon,
   CalendarBlankIcon,
-  ChatsCircleIcon,
   HouseIcon,
 } from "phosphor-react-native";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 
 const TabsLayout = () => {
   return (
@@ -19,9 +19,9 @@ const TabsLayout = () => {
         animation: "shift",
         headerTitleAlign: "left",
         headerRight: () => (
-          <Button isIconOnly variant="ghost">
-            <BellIcon color={colors.primary[500]} size={30} />
-          </Button>
+          <View className="mr-2">
+            <SyncCenter />
+          </View>
         ),
         tabBarInactiveTintColor: colors.primary[400],
         headerTitleStyle: {
@@ -56,14 +56,6 @@ const TabsLayout = () => {
           headerTitle: "Good Morning, User!",
           tabBarLabel: "Home",
           headerShown: false,
-          headerLeft: () => (
-            <Avatar size="sm" alt="user-profile">
-              <Avatar.Image
-                source={{ uri: "https://example.com/avatar.jpg" }}
-              />
-              <Avatar.Fallback>JD</Avatar.Fallback>
-            </Avatar>
-          ),
         }}
       />
       <Tabs.Screen
@@ -97,18 +89,15 @@ const TabsLayout = () => {
           },
         }}
       />
+
       <Tabs.Screen
-        name="messages"
+        name="notifications"
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <TabIcon
-              focused={focused}
-              color={color}
-              IconElement={ChatsCircleIcon}
-            />
+            <TabIcon focused={focused} color={color} IconElement={BellIcon} />
           ),
-          headerTitle: "Messages",
-          tabBarLabel: "Messages",
+          headerTitle: "Notifications",
+          tabBarLabel: "Notifications",
         }}
       />
     </Tabs>

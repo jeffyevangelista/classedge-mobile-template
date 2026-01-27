@@ -1,15 +1,20 @@
+import React, { useCallback, useMemo } from "react";
+import { View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Link } from "expo-router";
+import { FlashList } from "@shopify/flash-list";
+import { Avatar, Card } from "heroui-native";
+import { BookOpenIcon } from "phosphor-react-native";
 import { AppText } from "@/components/AppText";
 import { Icon } from "@/components/Icon";
 import Image from "@/components/Image";
 import Screen from "@/components/screen";
+import AnnouncementList from "@/features/announcements/AnnouncementList";
+import SyncBanner from "@/features/sync/components/SyncBanner";
+import SyncCenter from "@/features/sync/components/SyncCenter";
 import { colors } from "@/utils/colors";
-import { FlashList } from "@shopify/flash-list";
-import { Link } from "expo-router";
-import { Avatar, Button, Card } from "heroui-native";
-import { BellIcon, BookOpenIcon } from "phosphor-react-native";
-import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 
+// Move static types and data outside the component
 type PendingAssessment = {
   id: string;
   assessmentName: string;
@@ -35,7 +40,7 @@ const PENDING_ASSESSMENTS: PendingAssessment[] = [
   {
     id: "pa-004",
     assessmentName: "Mid-Year Performance Feedback",
-    dueDate: "2025-12-30", // Overdue example
+    dueDate: "2025-12-30",
   },
   {
     id: "pa-005",
@@ -44,14 +49,43 @@ const PENDING_ASSESSMENTS: PendingAssessment[] = [
   },
 ];
 
+const COURSES = [1, 2, 3, 4];
+
+// Sub-component for individual Assessment items to keep the main render clean
+const AssessmentItem = React.memo(({ item }: { item: PendingAssessment }) => (
+  <Card className="w-72 md:w-80 lg:w-96 mr-3">
+    <Card.Body className="flex flex-row items-center gap-2.5">
+      <View className="p-2 bg-emerald-100 rounded-full">
+        <Icon as={BookOpenIcon} size={24} className="text-emerald-500" />
+      </View>
+      <View className="flex-1">
+        <AppText numberOfLines={1} weight="semibold">
+          {item.assessmentName}
+        </AppText>
+        <AppText className="text-gray-500 text-sm">{item.dueDate}</AppText>
+      </View>
+    </Card.Body>
+  </Card>
+));
+
 const HomeScreen = () => {
+  // Memoize the render function for FlashList
+  const renderAssessment = useCallback(
+    ({ item }: { item: PendingAssessment }) => <AssessmentItem item={item} />,
+    [],
+  );
+
   return (
     <Screen>
-      <ScrollView className="pt-10">
-        <View className="gap-5 w-full max-w-3xl mx-auto px-5 pt-2.5 md:p-0">
-          {/* header */}
-          <View className="flex flex-row justify-between">
-            <Link href="/profile">
+      <ScrollView
+        className="pt-10"
+        // Improves scroll performance on Android
+        removeClippedSubviews={true}
+      >
+        <View className="gap-6 w-full max-w-3xl mx-auto pt-2.5 pb-10">
+          {/* Header Section */}
+          <View className="px-5 flex flex-row justify-between items-center">
+            <Link href="/(main)/profile">
               <View className="flex flex-row items-center gap-3">
                 <Avatar size="sm" alt="user-profile">
                   <Avatar.Image
@@ -60,95 +94,77 @@ const HomeScreen = () => {
                   <Avatar.Fallback>JD</Avatar.Fallback>
                 </Avatar>
                 <View>
-                  <AppText numberOfLines={1} className="">
-                    Good Morning,
-                  </AppText>
-                  <AppText
-                    numberOfLines={1}
-                    weight="semibold"
-                    className="text-2xl leading-none"
-                  >
+                  <AppText className="text-gray-500">Good Morning,</AppText>
+                  <AppText weight="semibold" className="text-2xl leading-tight">
                     User
                   </AppText>
                 </View>
               </View>
             </Link>
-            <Button isIconOnly variant="ghost">
-              <BellIcon color={colors.primary[500]} size={30} />
-            </Button>
+            <SyncCenter />
           </View>
 
-          {/* Current Class Card */}
-          <Card
-            className="max-w-3xl w-full mx-auto h-44"
-            style={{ backgroundColor: colors.primary[500] }}
-          ></Card>
-
-          {/* Pending Submissions */}
-          <View className="gap-2.5">
-            <AppText className="text-lg">Pending Submissions</AppText>
-            <FlashList
-              data={PENDING_ASSESSMENTS}
-              keyExtractor={(item) => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <Card className="w-72 md:w-80 lg:w-96 mx-1.5">
-                  <Card.Body className="flex flex-row items-center gap-2.5">
-                    <View className="p-2 bg-emerald-100 rounded-full">
-                      <Icon
-                        as={BookOpenIcon}
-                        size={24}
-                        className="text-emerald-500"
-                      />
-                    </View>
-                    <View>
-                      <AppText>{item.assessmentName}</AppText>
-                      <AppText>{item.dueDate}</AppText>
-                    </View>
-                  </Card.Body>
-                </Card>
-              )}
+          <View className="px-5 gap-5">
+            <SyncBanner />
+            <Card
+              className="w-full h-44 rounded-3xl"
+              style={{ backgroundColor: colors.primary[500] }}
             />
           </View>
 
-          {/* My Courses */}
-          <View className="gap-2.5">
-            <AppText className="text-lg">My Courses</AppText>
-            <View className="flex-row flex-wrap gap-2.5">
-              {[1, 2, 3, 4].map((course) => (
-                <Card key={course} className="flex-1 min-w-[45%] p-2">
-                  {/* <Card.Body className=""> */}
-                  <Image
-                    contentFit="cover"
-                    className="rounded-2xl overflow-hidden h-20"
-                    source={{ uri: "https://picsum.photos/200/300" }}
-                  />
-                  <AppText weight="semibold" className="text-base mb-2">
-                    Course {course}
-                  </AppText>
-                  <AppText className="text-sm text-gray-600">
-                    Description for course {course}
-                  </AppText>
-                  {/* </Card.Body> */}
-                </Card>
-              ))}
+          {/* Pending Submissions - Optimized FlashList */}
+          <View className="gap-3">
+            <AppText weight="semibold" className="text-lg px-5">
+              Pending Submissions
+            </AppText>
+            <View>
+              <FlashList
+                data={PENDING_ASSESSMENTS}
+                keyExtractor={(item) => item.id}
+                renderItem={renderAssessment}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 20 }}
+              />
             </View>
           </View>
 
-          <View className="gap-2.5">
-            <AppText className="text-lg">Announcements</AppText>
+          {/* Courses & Announcements */}
+          <View className="px-5 gap-5">
+            <View className="gap-3">
+              <AppText weight="semibold" className="text-lg">
+                My Courses
+              </AppText>
+              <View className="flex-row flex-wrap gap-3">
+                {COURSES.map((course) => (
+                  <Card key={course} className="flex-1 min-w-[46%] p-2">
+                    <Image
+                      contentFit="cover"
+                      className="rounded-xl overflow-hidden h-24 mb-2"
+                      source={{
+                        uri: `https://picsum.photos/seed/${course}/400/300`,
+                      }}
+                    />
+                    <AppText weight="semibold" className="text-base">
+                      Course {course}
+                    </AppText>
+                    <AppText
+                      className="text-xs text-gray-500"
+                      numberOfLines={2}
+                    >
+                      Standardized description for student enrollment.
+                    </AppText>
+                  </Card>
+                ))}
+              </View>
+            </View>
 
-            <FlashList
-              data={[1, 2, 3, 4]}
-              renderItem={() => (
-                <Card className="rounded-3x">
-                  <Card.Body>
-                    <AppText>Announcement</AppText>
-                  </Card.Body>
-                </Card>
-              )}
-            />
+            <View className="gap-3">
+              <AppText weight="semibold" className="text-lg">
+                Announcements
+              </AppText>
+              <AnnouncementList />
+            </View>
           </View>
         </View>
       </ScrollView>

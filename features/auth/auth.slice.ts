@@ -53,13 +53,6 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
     const { id, exp, needsOnboarding, needsPasswordSetup, role } =
       jwtDecode<DecodedToken>(accessToken);
 
-    console.log("[AUTH] Decoded token:", {
-      id,
-      exp,
-      needsOnboarding,
-      needsPasswordSetup,
-      role,
-    });
     if (!id || !exp) {
       console.warn("[AUTH] Invalid token: missing id or exp");
       return;
@@ -104,16 +97,8 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
           getASItem<number | null>(ASYNC_STORAGE_KEYS.EXPIRES_AT),
         ]);
 
-      console.log("[AUTH] Retrieved from storage:", {
-        accessToken,
-        refreshToken,
-        authUserStr,
-        expiresAtStr,
-      });
-
       const authUser = authUserStr as AuthUser | null;
       const expiresAt = expiresAtStr;
-      console.log("[AUTH] Parsed data:", { authUser, expiresAt });
 
       const isAuthenticated = !!(
         accessToken &&
@@ -129,10 +114,6 @@ const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
         isAuthenticated,
         expiresAt,
       });
-      console.log(
-        "[AUTH] Session restore complete. isAuthenticated:",
-        isAuthenticated,
-      );
     } catch (error) {
       console.warn("Session restore failed:", error);
       set(() => ({ ...initialState }));

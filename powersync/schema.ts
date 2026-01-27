@@ -1,18 +1,15 @@
 import { createId } from "@paralleldrive/cuid2";
 import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-// PowerSync/SQLite compatible UTC ISO string
 const utcNow = sql`(STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW'))`;
 
-// 1. Define your tables
 export const subjects = sqliteTable("subjects", {
   id: text("id").primaryKey().$defaultFn(createId), // PowerSync expects a text 'id' (UUID)
   name: text("name").notNull(),
   teacherName: text("teacher_name").notNull(),
   roomNumber: text("room_number").notNull(),
 
-  // Store as text for cross-db compatibility
   createdAt: text("created_at").notNull().default(utcNow),
   updatedAt: text("updated_at").notNull().default(utcNow),
 
@@ -24,12 +21,21 @@ export const subjects = sqliteTable("subjects", {
   ownerId: text("owner_id").notNull(),
 });
 
-// 2. Define other tables here...
-// export const tasks = sqliteTable("tasks", { ... });
+export const announcements = sqliteTable("announcements", {
+  id: integer("id").primaryKey(),
+  authorId: text("author_id").notNull(),
+  eventId: text("event_id"),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  createdAt: text("created_at")
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .notNull(),
+  updatedAt: text("updated_at")
+    .default(sql`(CURRENT_TIMESTAMP)`)
+    .notNull(),
+});
 
-// 3. Export the schema object for Drizzle
-export const drizzleSchema = { subjects };
+export const drizzleSchema = { subjects, announcements };
 
-// 4. Export Types for use in your UI components
 export type Subject = InferSelectModel<typeof subjects>;
 export type NewSubject = InferInsertModel<typeof subjects>;

@@ -1,10 +1,11 @@
+import Screen from "@/components/screen";
 import { Text, View } from "react-native";
 
 const AcademicRecordsScreen = () => {
   return (
-    <View>
+    <Screen>
       <Text>AcademicRecordsScreen</Text>
-    </View>
+    </Screen>
   );
 };
 

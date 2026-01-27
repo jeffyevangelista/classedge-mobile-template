@@ -9,7 +9,7 @@ import { FlashList } from "@shopify/flash-list";
 import { eq } from "drizzle-orm";
 import { Card, TextField } from "heroui-native";
 import { MagnifyingGlassIcon } from "phosphor-react-native";
-import { Alert, useWindowDimensions, View } from "react-native";
+import { Alert, Pressable, useWindowDimensions, View } from "react-native";
 
 const CourseList = () => {
   const { width } = useWindowDimensions();
@@ -20,19 +20,23 @@ const CourseList = () => {
   const numColumns = Math.max(1, Math.floor(width / MIN_CARD_WIDTH));
 
   const { data, isLoading } = useQuery(
-    toCompilableQuery(db.select().from(subjects))
+    toCompilableQuery(db.select().from(subjects)),
   );
 
   return (
     <View className="w-full max-w-6xl mx-auto flex-1  ">
       <FlashList
         ListHeaderComponent={
-          <TextField className="p-1 md:max-w-xl md:mx-auto w-full">
-            <TextField.Input>
-              <TextField.InputEndContent>
+          <TextField className=" p-1 md:max-w-xl md:mx-auto w-full">
+            <View className="w-full flex-row items-center">
+              <TextField.Input
+                className="flex-1 pr-10 shadow-none "
+                placeholder="Find a course"
+              />
+              <Pressable className="absolute right-4">
                 <Icon as={MagnifyingGlassIcon} />
-              </TextField.InputEndContent>
-            </TextField.Input>
+              </Pressable>
+            </View>
           </TextField>
         }
         key={numColumns}

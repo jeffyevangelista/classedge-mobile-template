@@ -28,7 +28,7 @@ api.interceptors.response.use(
     const originalRequest = error.config;
     const { setAccessToken, refreshToken } = useStore.getState();
 
-    console.log(error.response?.status);
+    console.log({ status: error.response?.status, refreshToken });
 
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
@@ -43,8 +43,6 @@ api.interceptors.response.use(
           console.log("triggered");
 
           const { accessToken } = await refresh(refreshToken);
-
-          console.log({ accessToken });
 
           setAccessToken(accessToken);
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;

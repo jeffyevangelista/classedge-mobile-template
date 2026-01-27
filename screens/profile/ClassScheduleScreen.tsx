@@ -1,10 +1,11 @@
+import Screen from "@/components/screen";
 import { Text, View } from "react-native";
 
 const ClassScheduleScreen = () => {
   return (
-    <View>
+    <Screen>
       <Text>ClassScheduleScreen</Text>
-    </View>
+    </Screen>
   );
 };
 
